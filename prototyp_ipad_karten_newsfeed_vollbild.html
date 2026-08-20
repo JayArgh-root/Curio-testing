@@ -114,13 +114,18 @@
   .ov-category-tile {
     aspect-ratio: 1 / 1; border-radius: 20px; background: var(--parchment) center/cover no-repeat;
     box-shadow: 0 14px 26px -14px rgba(0,0,0,0.45), 0 2px 0 rgba(255,255,255,0.4) inset;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
-    cursor: pointer; position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 12px;
+    padding-bottom: 18px; cursor: pointer; position: relative; overflow: hidden;
   }
   .ov-category-tile.has-img { background-color: var(--ink); }
-  .ov-category-tile .tile-gradient { position: absolute; inset: 0; background: rgba(10, 21, 36, 0.55); pointer-events: none; }
+  .ov-category-tile .tile-gradient {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(10,21,36,0.15) 0%, rgba(10,21,36,0.72) 100%);
+    pointer-events: none;
+  }
   .ov-category-tile .icon-badge, .ov-category-tile .cat-name { position: relative; z-index: 1; }
-  .ov-category-tile.has-img .icon-badge { background: rgba(243, 234, 216, 0.16); }
+  .ov-category-tile.has-img .icon-badge { background: rgba(243, 234, 216, 0.18); }
+  .ov-category-tile.has-img .icon-badge svg * { fill: rgba(243, 234, 216, 0.9); stroke: rgba(243, 234, 216, 0.9); }
   .ov-category-tile.has-img .cat-name { color: var(--parchment); }
   .ov-category-tile .icon-badge {
     width: 54px; height: 54px; border-radius: 50%; background: rgba(184,146,90,0.1);
@@ -155,18 +160,14 @@
   .sheet-overlay.open { opacity: 1; pointer-events: auto; }
 
   .sheet {
-    position: absolute; left: 0; right: 0; bottom: 0; height: 88%;
-    background: var(--parchment); border-radius: 22px 22px 0 0;
-    box-shadow: 0 -20px 50px -10px rgba(0,0,0,0.5);
+    position: absolute; left: 0; right: 0; bottom: 0; height: 100%;
+    background: var(--parchment); border-radius: 0;
     display: flex; flex-direction: column; overflow: hidden;
     transform: translateY(100%); transition: transform 0.32s cubic-bezier(.22,.85,.32,1);
   }
   .sheet-overlay.open .sheet { transform: translateY(0); }
 
-  .sheet-handle {
-    flex-shrink: 0; display: flex; justify-content: center; padding: 10px 0 4px 0; background: var(--parchment);
-  }
-  .sheet-handle span { width: 40px; height: 4px; border-radius: 3px; background: var(--parchment-edge); }
+  .sheet-handle { display: none; }
 
   .sheet-hero { position: relative; width: 100%; flex: 0 0 32%; overflow: hidden; flex-shrink: 0; }
   .sheet-hero svg { width: 100%; height: 100%; display: block; }
@@ -284,7 +285,6 @@
 <body>
 
 <div class="screen">
-        <div class="statusbar"><span>9:41</span><span>●●●●● 5G 🔋 100%</span></div>
         <button class="overview-back-btn" id="overviewBackBtn" title="Zurück zur Übersicht">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -337,7 +337,6 @@
         </div>
 
         <div class="overview-overlay" id="overviewOverlay">
-          <div class="statusbar"><span>9:41</span><span>●●●●● 5G 🔋 100%</span></div>
           <div class="ov-content">
             <div class="ov-hero-row">
               <div class="ov-hero-tile" id="ovHeroMeinTag">
@@ -1240,8 +1239,8 @@ function openSheet(index) {
       <button class="fb-send" id="fbCommentSend">Senden</button>
     </div>
     <div class="sheet-word-count">${a.wordCount}</div>`;
-  document.getElementById('sheetCloseBtn').addEventListener('click', closeSheet);
-  document.getElementById('sheetCta').addEventListener('click', () => openFulltext(index));
+  document.getElementById('sheetCloseBtn').onclick = closeSheet;
+  document.getElementById('sheetCta').onclick = () => openFulltext(index);
   document.getElementById('sheetOverlay').classList.add('open');
   initFeedback(index);
 }
